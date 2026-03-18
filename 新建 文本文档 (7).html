@@ -1,0 +1,58 @@
+<script>
+function speakText(text) {
+    if (!('speechSynthesis' in window)) {
+        alert('浏览器不支持语音');
+        return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US';
+
+    // ✅ Fix mobile issues
+    utterance.onstart = () => console.log("Speech started");
+    utterance.onerror = (e) => {
+        console.log("Speech error:", e);
+        alert("点击两次按钮以启用语音 🔊");
+    };
+
+    // cancel previous speech
+    window.speechSynthesis.cancel();
+
+    // small delay improves mobile reliability
+    setTimeout(() => {
+        window.speechSynthesis.speak(utterance);
+    }, 100);
+}
+
+function checkAnswer(inputId, correctAnswer, feedbackId) {
+    const val = document.getElementById(inputId).value.trim().toLowerCase();
+    const fb = document.getElementById(feedbackId);
+
+    if (!val) {
+        fb.textContent = "请输入答案";
+        fb.style.color = "red";
+        return;
+    }
+
+    if (val === correctAnswer) {
+        fb.textContent = "✅ 正确";
+        fb.style.color = "green";
+    } else {
+        fb.textContent = "❌ 错误（提示：注意拼写）";
+        fb.style.color = "red";
+    }
+}
+
+function toggleAnswer(id) {
+    const el = document.getElementById(id);
+
+    // ✅ FIX: use computed style instead of inline style
+    const currentDisplay = window.getComputedStyle(el).display;
+
+    if (currentDisplay === "none") {
+        el.style.display = "block";
+    } else {
+        el.style.display = "none";
+    }
+}
+</script>
