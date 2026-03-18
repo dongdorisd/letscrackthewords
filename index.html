@@ -1,245 +1,210 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>英语语法互动博客 - 第1章 词类概述</title>
-
-<style>
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f0f2f5;
-    color: #222;
-    margin: 0;
-    padding: 0;
-    line-height: 1.6;
-}
-
-/* Container */
-.container {
-    width: 95%;
-    max-width: 900px;
-    margin: 10px auto;
-    padding: 15px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-}
-
-/* Typography */
-h1 { font-size: 28px; color:#004080; border-bottom:2px solid #004080; padding-bottom:8px; }
-h2 { font-size: 22px; color:#003366; margin-top:25px; }
-h3 { font-size: 18px; margin-top:15px; }
-p  { font-size: 16px; }
-
-/* Elements */
-.example {
-    display:block;
-    margin:10px 0;
-    background:#f7f7f7;
-    padding:10px;
-    border-radius:6px;
-}
-
-.highlight {
-    background:#ffeb3b;
-    font-weight:bold;
-    padding:2px 4px;
-}
-
-/* Buttons */
-button {
-    background:#004080;
-    color:#fff;
-    border:none;
-    padding:10px;
-    margin-top:8px;
-    border-radius:6px;
-    font-size:15px;
-    width:100%;
-    cursor:pointer;
-}
-
-button:hover {
-    background:#0066cc;
-}
-
-/* Input */
-input[type=text] {
-    width:100%;
-    padding:10px;
-    margin-top:8px;
-    font-size:15px;
-    border-radius:6px;
-    border:1px solid #ccc;
-}
-
-/* Blocks */
-.exercise {
-    background:#fdfdfd;
-    padding:15px;
-    border-radius:10px;
-    margin:20px 0;
-    box-shadow:0 3px 8px rgba(0,0,0,0.05);
-}
-
-.feedback {
-    display:block;
-    margin-top:5px;
-    font-weight:bold;
-}
-
-.answer {
-    display:none;
-    margin-top:8px;
-    color:green;
-}
-
-.tip {
-    font-size:14px;
-    background:#e8f0fe;
-    padding:8px;
-    border-left:4px solid #004080;
-    margin:10px 0;
-}
-
-/* Desktop enhancement */
-@media (min-width: 768px) {
-    button {
-        width:auto;
-        display:inline-block;
-        margin-left:5px;
-    }
-
-    input[type=text] {
-        width:200px;
-        display:inline-block;
-    }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBuddy - 背单词神器</title>
+    <style>
+        /* --- 这里是 CSS 样式部分 --- */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        h1 { color: #4a90e2; margin-bottom: 1.5rem; }
+        .word-card {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 1rem 0;
+            color: #2c3e50;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 12px;
+            font-size: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus {
+            border-color: #4a90e2;
+            outline: none;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.2s;
+        }
+        button:active { transform: scale(0.98); }
+        .btn-check { background-color: #4CAF50; color: white; }
+        .btn-speak { background-color: #2196F3; color: white; }
+        .btn-next { background-color: #FF9800; color: white; }
+        
+        .feedback {
+            font-weight: bold;
+            min-height: 1.5rem;
+            margin-top: 10px;
+        }
+        .hint {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #666;
+            display: none; /* 默认隐藏 */
+            background: #fff3cd;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
 </head>
-
 <body>
-<div class="container">
 
-<h1>第1章：词类概述 🏁</h1>
+    <div class="container">
+        <h1>📚 背单词挑战</h1>
+        
+        <!-- 单词显示区域 -->
+        <div class="word-card" id="current-word">Loading...</div>
+        
+        <!-- 输入框 -->
+        <input type="text" id="user-answer" placeholder="输入中文意思...">
+        
+        <!-- 按钮组 -->
+        <div class="btn-group">
+            <button class="btn-check" onclick="validateAnswer()">✅ 提交</button>
+            <button class="btn-speak" onclick="speakText(currentWordData.en)">🔊 发音</button>
+        </div>
+        <button class="btn-next" onclick="nextWord()">➡️ 下一个</button>
 
-<div class="exercise">
-<h2>1.1 名词 (Nouns)</h2>
+        <!-- 反馈信息 -->
+        <div class="feedback" id="feedback-msg"></div>
+        
+        <!-- 提示区域 -->
+        <div class="hint" id="hint-area"></div>
+    </div>
 
-<p>
-名词用于表示人、事物、地点或抽象概念，例如：
-<span class="highlight">book</span>, 
-<span class="highlight">apple</span>, 
-<span class="highlight">Paris</span>, 
-<span class="highlight">happiness</span>
-</p>
+    <script>
+        // --- 这里是你的 JavaScript 逻辑 (已整合并适配) ---
 
-<span class="example">例句：book, apple, Paris, happiness</span>
-<button onclick="speakText('book apple Paris happiness')">🔊 播放</button>
+        // 1. 单词数据
+        const words = [
+            { en: "Apple", cn: "苹果" },
+            { en: "Banana", cn: "香蕉" },
+            { en: "Orange", cn: "橙子" },
+            { en: "Computer", cn: "电脑" },
+            { en: "Book", cn: "书" },
+            { en: "Water", cn: "水" },
+            { en: "Friend", cn: "朋友" },
+            { en: "School", cn: "学校" }
+        ];
 
-<h3>练习</h3>
+        let currentWordData = words[0];
+        let currentIndex = 0;
 
-<ol>
-<li>
-I have a ________ on the table.
-<input type="text" id="q1">
-<button onclick="checkAnswer('q1','book','fb1')">提交</button>
-<span id="fb1" class="feedback"></span>
-</li>
+        // 2. 初始化页面
+        function initGame() {
+            loadWord(currentIndex);
+        }
 
-<li>
-______ is the capital of France.
-<input type="text" id="q2">
-<button onclick="checkAnswer('q2','paris','fb2')">提交</button>
-<span id="fb2" class="feedback"></span>
-</li>
+        function loadWord(index) {
+            currentWordData = words[index];
+            document.getElementById('current-word').textContent = currentWordData.en;
+            document.getElementById('user-answer').value = '';
+            document.getElementById('feedback-msg').textContent = '';
+            document.getElementById('hint-area').style.display = 'none';
+            document.getElementById('user-answer').focus();
+        }
 
-<li>
-Honesty is a valuable ________.
-<input type="text" id="q3">
-<button onclick="checkAnswer('q3','quality','fb3')">提交</button>
-<span id="fb3" class="feedback"></span>
-</li>
-</ol>
+        // 3. 验证答案 (适配你的 HTML 结构)
+        function validateAnswer() {
+            const inputVal = document.getElementById('user-answer').value.trim().toLowerCase();
+            const feedbackEl = document.getElementById('feedback-msg');
+            
+            if (!inputVal) {
+                feedbackEl.textContent = "⚠️ 请输入答案！";
+                feedbackEl.style.color = "#e67e22";
+                return;
+            }
 
-<button onclick="toggleAnswer('ans1')">查看答案</button>
-<div id="ans1" class="answer">
-book / Paris / quality
-</div>
+            if (inputVal === currentWordData.cn.toLowerCase()) {
+                feedbackEl.textContent = "✅ 正确！太棒了！";
+                feedbackEl.style.color = "#27ae60";
+                // 答对后自动播放发音（可选）
+                // speakText(currentWordData.en); 
+            } else {
+                feedbackEl.textContent = `❌ 错误。正确答案是：${currentWordData.cn}`;
+                feedbackEl.style.color = "#c0392b";
+                // 显示提示
+                const hintEl = document.getElementById('hint-area');
+                hintEl.textContent = `💡 提示：首字母是 ${currentWordData.en.charAt(0)}...`;
+                hintEl.style.display = 'block';
+            }
+        }
 
-</div>
+        // 4. 下一个单词
+        function nextWord() {
+            currentIndex = (currentIndex + 1) % words.length;
+            loadWord(currentIndex);
+        }
 
-<div class="exercise">
-<h2>1.2 代词 (Pronouns)</h2>
+        // 5. 语音功能 (来自你上传的文件，稍作适配)
+        function speakText(text) {
+            if (!('speechSynthesis' in window)) {
+                alert('抱歉，您的浏览器不支持语音功能。');
+                return;
+            }
+            
+            // 取消之前的发音
+            window.speechSynthesis.cancel();
 
-<p>代词用于替代名词，例如：I, you, he, she</p>
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.9; // 语速稍慢一点更清晰
 
-<button onclick="speakText('I you he she it we they')">🔊 播放</button>
+            utterance.onstart = () => console.log("🔊 开始发音:", text);
+            utterance.onerror = (e) => {
+                console.error("语音错误:", e);
+                // 移动端有时需要用户交互才能发音，这里不做强制alert以免打扰
+            };
 
-<ol>
-<li>
-Tom is my friend. ______ is kind.
-<input type="text" id="q4">
-<button onclick="checkAnswer('q4','he','fb4')">提交</button>
-<span id="fb4" class="feedback"></span>
-</li>
+            // 小延迟以确保在移动端可靠运行
+            setTimeout(() => {
+                window.speechSynthesis.speak(utterance);
+            }, 100);
+        }
 
-<li>
-This book is Mary’s. It is ______.
-<input type="text" id="q5">
-<button onclick="checkAnswer('q5','hers','fb5')">提交</button>
-<span id="fb5" class="feedback"></span>
-</li>
+        // 绑定回车键提交
+        document.getElementById('user-answer').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                validateAnswer();
+            }
+        });
 
-<li>
-He prepared ______ for the interview.
-<input type="text" id="q6">
-<button onclick="checkAnswer('q6','himself','fb6')">提交</button>
-<span id="fb6" class="feedback"></span>
-</li>
-</ol>
+        // 启动游戏
+        initGame();
 
-</div>
-
-</div>
-
-<script>
-function speakText(text) {
-    if ('speechSynthesis' in window) {
-        speechSynthesis.cancel(); // prevent stacking
-        const u = new SpeechSynthesisUtterance(text);
-        u.lang = 'en-US';
-        speechSynthesis.speak(u);
-    } else {
-        alert('浏览器不支持语音');
-    }
-}
-
-function checkAnswer(inputId, correctAnswer, feedbackId) {
-    const val = document.getElementById(inputId).value.trim().toLowerCase();
-    const fb = document.getElementById(feedbackId);
-
-    if (!val) {
-        fb.textContent = "请输入答案";
-        fb.style.color = "red";
-        return;
-    }
-
-    if (val === correctAnswer) {
-        fb.textContent = "✅ 正确";
-        fb.style.color = "green";
-    } else {
-        fb.textContent = "❌ 错误";
-        fb.style.color = "red";
-    }
-}
-
-function toggleAnswer(id) {
-    const el = document.getElementById(id);
-    el.style.display = (el.style.display === 'none' || el.style.display === '') ? 'block' : 'none';
-}
-</script>
-
+    </script>
 </body>
 </html>
