@@ -1,27 +1,219 @@
-<script>
-function speakText(text) {
-    if (!('speechSynthesis' in window)) {
-        alert('浏览器不支持语音');
-        return;
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英语语法互动博客 - 第1章 词类概述</title>
+
+<style>
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f0f2f5;
+    color: #222;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+/* Container */
+.container {
+    width: 95%;
+    max-width: 900px;
+    margin: 10px auto;
+    padding: 15px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+/* Typography */
+h1 { font-size: 28px; color:#004080; border-bottom:2px solid #004080; padding-bottom:8px; }
+h2 { font-size: 22px; color:#003366; margin-top:25px; }
+h3 { font-size: 18px; margin-top:15px; }
+p  { font-size: 16px; }
+
+/* Elements */
+.example {
+    display:block;
+    margin:10px 0;
+    background:#f7f7f7;
+    padding:10px;
+    border-radius:6px;
+}
+
+.highlight {
+    background:#ffeb3b;
+    font-weight:bold;
+    padding:2px 4px;
+}
+
+/* Buttons */
+button {
+    background:#004080;
+    color:#fff;
+    border:none;
+    padding:10px;
+    margin-top:8px;
+    border-radius:6px;
+    font-size:15px;
+    width:100%;
+    cursor:pointer;
+}
+
+button:hover {
+    background:#0066cc;
+}
+
+/* Input */
+input[type=text] {
+    width:100%;
+    padding:10px;
+    margin-top:8px;
+    font-size:15px;
+    border-radius:6px;
+    border:1px solid #ccc;
+}
+
+/* Blocks */
+.exercise {
+    background:#fdfdfd;
+    padding:15px;
+    border-radius:10px;
+    margin:20px 0;
+    box-shadow:0 3px 8px rgba(0,0,0,0.05);
+}
+
+.feedback {
+    display:block;
+    margin-top:5px;
+    font-weight:bold;
+}
+
+.answer {
+    display:none;
+    margin-top:8px;
+    color:green;
+}
+
+.tip {
+    font-size:14px;
+    background:#e8f0fe;
+    padding:8px;
+    border-left:4px solid #004080;
+    margin:10px 0;
+}
+
+/* Desktop enhancement */
+@media (min-width: 768px) {
+    button {
+        width:auto;
+        display:inline-block;
+        margin-left:5px;
     }
 
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'en-US';
+    input[type=text] {
+        width:200px;
+        display:inline-block;
+    }
+}
+</style>
+</head>
 
-    // ✅ Fix mobile issues
-    utterance.onstart = () => console.log("Speech started");
-    utterance.onerror = (e) => {
-        console.log("Speech error:", e);
-        alert("点击两次按钮以启用语音 🔊");
-    };
+<body>
+<div class="container">
 
-    // cancel previous speech
-    window.speechSynthesis.cancel();
+<h1>第1章：词类概述 🏁</h1>
 
-    // small delay improves mobile reliability
-    setTimeout(() => {
-        window.speechSynthesis.speak(utterance);
-    }, 100);
+<div class="exercise">
+<h2>1.1 名词 (Nouns)</h2>
+
+<p>
+名词用于表示人、事物、地点或抽象概念，例如：
+<span class="highlight">book</span>, 
+<span class="highlight">apple</span>, 
+<span class="highlight">Paris</span>, 
+<span class="highlight">happiness</span>
+</p>
+
+<span class="example">例句：book, apple, Paris, happiness</span>
+<button onclick="speakText('book apple Paris happiness')">🔊 播放</button>
+
+<h3>练习</h3>
+
+<ol>
+<li>
+I have a ________ on the table.
+<input type="text" id="q1">
+<button onclick="checkAnswer('q1','book','fb1')">提交</button>
+<span id="fb1" class="feedback"></span>
+</li>
+
+<li>
+______ is the capital of France.
+<input type="text" id="q2">
+<button onclick="checkAnswer('q2','paris','fb2')">提交</button>
+<span id="fb2" class="feedback"></span>
+</li>
+
+<li>
+Honesty is a valuable ________.
+<input type="text" id="q3">
+<button onclick="checkAnswer('q3','quality','fb3')">提交</button>
+<span id="fb3" class="feedback"></span>
+</li>
+</ol>
+
+<button onclick="toggleAnswer('ans1')">查看答案</button>
+<div id="ans1" class="answer">
+book / Paris / quality
+</div>
+
+</div>
+
+<div class="exercise">
+<h2>1.2 代词 (Pronouns)</h2>
+
+<p>代词用于替代名词，例如：I, you, he, she</p>
+
+<button onclick="speakText('I you he she it we they')">🔊 播放</button>
+
+<ol>
+<li>
+Tom is my friend. ______ is kind.
+<input type="text" id="q4">
+<button onclick="checkAnswer('q4','he','fb4')">提交</button>
+<span id="fb4" class="feedback"></span>
+</li>
+
+<li>
+This book is Mary’s. It is ______.
+<input type="text" id="q5">
+<button onclick="checkAnswer('q5','hers','fb5')">提交</button>
+<span id="fb5" class="feedback"></span>
+</li>
+
+<li>
+He prepared ______ for the interview.
+<input type="text" id="q6">
+<button onclick="checkAnswer('q6','himself','fb6')">提交</button>
+<span id="fb6" class="feedback"></span>
+</li>
+</ol>
+
+</div>
+
+</div>
+
+<script>
+function speakText(text) {
+    if ('speechSynthesis' in window) {
+        speechSynthesis.cancel(); // prevent stacking
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'en-US';
+        speechSynthesis.speak(u);
+    } else {
+        alert('浏览器不支持语音');
+    }
 }
 
 function checkAnswer(inputId, correctAnswer, feedbackId) {
@@ -38,21 +230,16 @@ function checkAnswer(inputId, correctAnswer, feedbackId) {
         fb.textContent = "✅ 正确";
         fb.style.color = "green";
     } else {
-        fb.textContent = "❌ 错误（提示：注意拼写）";
+        fb.textContent = "❌ 错误";
         fb.style.color = "red";
     }
 }
 
 function toggleAnswer(id) {
     const el = document.getElementById(id);
-
-    // ✅ FIX: use computed style instead of inline style
-    const currentDisplay = window.getComputedStyle(el).display;
-
-    if (currentDisplay === "none") {
-        el.style.display = "block";
-    } else {
-        el.style.display = "none";
-    }
+    el.style.display = (el.style.display === 'none' || el.style.display === '') ? 'block' : 'none';
 }
 </script>
+
+</body>
+</html>
